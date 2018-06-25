@@ -24,7 +24,7 @@ public class LLClient {
 		// System.out.println(list.removeFirst());
 		// System.out.println(list.removeLast());
 		//
-		list.addAt(2, 45);
+		// list.addAt(2, 45);
 		// list.display();
 		//
 		// System.out.println(list.removeAt(3));
