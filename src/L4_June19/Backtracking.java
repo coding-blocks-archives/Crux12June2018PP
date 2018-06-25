@@ -6,22 +6,19 @@ public class Backtracking {
 
 		// nqueen(new boolean[4][4], 0, "");
 		// pattern(0, 0, 5);
-		// int[][] board = { { 3, 0, 6, 5, 0, 8, 4, 0, 0 }, { 5, 2, 0, 0, 0, 0, 0, 0, 0
-		// }, { 0, 8, 7, 0, 0, 0, 0, 3, 1 },
-		// { 0, 0, 3, 0, 1, 0, 0, 8, 0 }, { 9, 0, 0, 8, 6, 3, 0, 0, 5 }, { 0, 5, 0, 0,
-		// 9, 0, 6, 0, 0 },
-		// { 1, 3, 0, 0, 0, 0, 2, 5, 0 }, { 0, 0, 0, 0, 0, 0, 0, 7, 4 }, { 0, 0, 5, 2,
-		// 0, 6, 3, 0, 0 } };
-		//
-		// boolean res = sudokuSolver(board, 0, 0);
-		//
-		// if (res)
-		// display(board);
-		// else {
-		// System.out.println("not possible");
-		// }
+		int[][] board = { { 3, 0, 6, 5, 0, 8, 4, 0, 0 }, { 5, 2, 0, 0, 0, 0, 0, 0, 0 }, { 0, 8, 7, 0, 0, 0, 0, 3, 1 },
+				{ 0, 0, 3, 0, 1, 0, 0, 8, 0 }, { 9, 0, 0, 8, 6, 3, 0, 0, 5 }, { 0, 5, 0, 0, 9, 0, 6, 0, 0 },
+				{ 1, 3, 0, 0, 0, 0, 2, 5, 0 }, { 0, 0, 0, 0, 0, 0, 0, 7, 4 }, { 0, 0, 5, 2, 0, 6, 3, 0, 0 } };
 
-		nKnights1(new boolean[4][4], 0, 0, "", 0);
+		boolean res = sudokuSolver(board, 0, 0);
+
+		if (res)
+			display(board);
+		else {
+			System.out.println("not possible");
+		}
+
+		// nKnights(new boolean[4][4], 0, 0, "", 0);
 
 	}
 
@@ -209,30 +206,6 @@ public class Backtracking {
 				board[r][c] = false;
 			}
 		}
-
-	}
-
-	public static void nKnights1(boolean[][] board, int row, int col, String asf, int kpsf) {
-
-		if (kpsf == board.length) {
-			System.out.println(asf);
-			return;
-		}
-
-		if (row == board.length) {
-			return;
-		}
-
-		if (col == board[0].length) {
-			nKnights1(board, row + 1, 0, asf, kpsf);
-			return;
-		}
-
-		board[row][col] = true;
-		nKnights1(board, row, col + 1, asf + "{" + row + "-" + col + "}", kpsf + 1);
-		board[row][col] = false;
-
-		nKnights1(board, row, col + 1, asf, kpsf);
 
 	}
 
