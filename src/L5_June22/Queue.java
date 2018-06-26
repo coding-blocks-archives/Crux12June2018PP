@@ -2,8 +2,8 @@ package L5_June22;
 
 public class Queue {
 
-	private int[] data;
-	private int front;
+	protected int[] data;
+	protected int front;
 	private int size;
 
 	public Queue(int cap) {

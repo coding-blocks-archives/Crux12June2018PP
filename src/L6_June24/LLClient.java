@@ -20,6 +20,8 @@ public class LLClient {
 		// list.display();
 		list.addFirst(100);
 		list.addFirst(101);
+		list.addFirst(102);
+		list.addFirst(103);
 		// list.display();
 		// System.out.println(list.removeFirst());
 		// System.out.println(list.removeLast());
@@ -37,9 +39,13 @@ public class LLClient {
 		// list.display();
 		//
 		// list.RPR();
+		// list.display();
+		// list.fold();
 		list.display();
 
-		list.fold();
+		list.kReverse(3);
+		list.display();
+		list.addLast(1000);
 		list.display();
 	}
 

@@ -4,13 +4,14 @@ public class StackClient {
 
 	public static void main(String[] args) throws Exception {
 
-		Stack s = new Stack();
+		Stack s = new DynamicStack(5);
 		s.push(10);
 		s.push(20);
 		s.push(30);
 		s.push(40);
 		s.push(50);
-		// s.push(60);
+		s.push(60);
+		s.push(70);
 		s.display();
 		System.out.println(s.pop());
 		s.display();
@@ -22,8 +23,8 @@ public class StackClient {
 		// System.out.print(val + " ");
 		// }
 
-		int[] arr = { 100, 5, 2, 20, 7, 3, 9 };
-		nextGreater(arr);
+		// int[] arr = { 100, 5, 2, 20, 7, 3, 9 };
+		// nextGreater(arr);
 	}
 
 	public static void displayReverse(Stack s) throws Exception {
@@ -63,7 +64,6 @@ public class StackClient {
 		int[] span = new int[prices.length];
 
 		Stack s = new Stack(100);
-		// java.util.Stack<Integer> s = new java.util.Stack<>() ;
 
 		s.push(0);
 		span[0] = 1;

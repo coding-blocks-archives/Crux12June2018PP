@@ -2,8 +2,8 @@ package L4_June19;
 
 public class Stack {
 
-	private int[] data;
-	private int tos;
+	protected int[] data;
+	protected int tos;
 
 	public Stack() {
 		this.data = new int[5];

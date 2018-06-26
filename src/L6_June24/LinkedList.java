@@ -366,4 +366,65 @@ public class LinkedList {
 
 	}
 
+	public int mid() {
+
+		Node slow = this.head;
+		Node fast = this.head;
+
+		while (fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+
+		return slow.data;
+	}
+
+	public int kthFromLast(int k) {
+
+		Node slow = this.head;
+		Node fast = this.head;
+
+		for (int i = 0; i < k; i++) {
+			fast = fast.next;
+		}
+
+		while (fast != null) {
+			fast = fast.next;
+			slow = slow.next;
+		}
+
+		return slow.data;
+
+	}
+
+	public void kReverse(int k) throws Exception {
+
+		LinkedList prev = null;
+		LinkedList curr = null;
+
+		while (this.size != 0) {
+
+			curr = new LinkedList();
+
+			for (int i = 1; i <= k; i++) {
+				curr.addFirst(this.removeFirst());
+			}
+
+			if (prev == null) {
+				prev = curr;
+			} else {
+				prev.tail.next = curr.head;
+				prev.tail = curr.tail;
+				prev.size += curr.size;
+
+			}
+		}
+
+		this.head = prev.head;
+		this.tail = prev.tail;
+		this.size = prev.size;
+
+	}
+
+	
 }
