@@ -17,11 +17,13 @@ public class BTClient {
 	// 10 true 20 true 30 false false false false
 	public static void main(String[] args) {
 
-		String str = "10 true 20 true 30 false false false false";
-		int[] pre = { 10, 20, 40, 50, 60, 80, 30, 70 };
-		int[] in = { 40, 20, 80, 60, 50, 10, 30, 70 };
+		int[] in = { 40, 20, 70, 60, 50, 10, 30, 40 };
+		int[] pre = { 10, 20, 40, 50, 60, 70, 30, 40 };
+
 		BinaryTree bt = new BinaryTree(pre, in);
-		// BinaryTree bt = new BinaryTree(str);
+		// BinaryTree bt = new BinaryTree(
+		// "10 true 20 true 40 false false true 50 false false true 30 true 60 false
+		// false false");
 		bt.display();
 
 		System.out.println(bt.ht());
@@ -31,12 +33,8 @@ public class BTClient {
 
 		System.out.println(bt.diameter());
 		System.out.println(bt.diameter2());
+		System.out.println(bt.balanced());
 
-		System.out.println(bt.treeBalanced());
-
-		bt.preorder();
-		System.out.println();
-		bt.preorderI();
 	}
 
 }

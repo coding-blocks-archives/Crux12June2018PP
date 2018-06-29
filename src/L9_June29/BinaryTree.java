@@ -26,6 +26,37 @@ public class BinaryTree {
 		this.root = takeInput(null, false);
 	}
 
+	public BinaryTree(int[] pre, int[] in) {
+
+		this.root = construct(pre, 0, pre.length - 1, in, 0, in.length - 1);
+	}
+
+	private Node construct(int[] pre, int plo, int phi, int[] in, int ilo, int ihi) {
+
+		if (plo > phi) {
+			return null;
+		}
+
+		Node nn = new Node();
+		nn.data = pre[plo];
+
+		int si = -1;
+		for (int i = ilo; i <= ihi; i++) {
+			if (in[i] == pre[plo]) {
+				si = i;
+				break;
+			}
+		}
+
+		int nel = si - ilo;
+
+		nn.left = construct(pre, plo + 1, plo + nel, in, ilo, si - 1);
+		nn.right = construct(pre, plo + nel + 1, phi, in, si + 1, ihi);
+
+		return nn;
+
+	}
+
 	private Node takeInput(Node parent, boolean ilc) {
 
 		if (parent == null) {
@@ -164,6 +195,93 @@ public class BinaryTree {
 
 		return Math.max(lh, rh) + 1;
 
+	}
+
+	public int diameter() {
+		return this.diameter(this.root);
+	}
+
+	private int diameter(Node node) {
+
+		if (node == null) {
+			return 0;
+		}
+
+		int ld = diameter(node.left);
+		int rd = diameter(node.right);
+
+		int sp = ht(node.left) + ht(node.right) + 2;
+
+		return Math.max(sp, Math.max(ld, rd));
+
+	}
+
+	private class Pair {
+
+		int height;
+		int diameter;
+	}
+
+	public int diameter2() {
+		return diameter2(root).diameter;
+	}
+
+	private Pair diameter2(Node node) {
+
+		if (node == null) {
+			Pair bp = new Pair();
+			bp.height = -1;
+			bp.diameter = 0;
+			return bp;
+		}
+
+		Pair lp = diameter2(node.left);
+		Pair rp = diameter2(node.right);
+
+		Pair sp = new Pair();
+		sp.height = Math.max(lp.height, rp.height) + 1;
+
+		int lpd = lp.diameter;
+		int rpd = rp.diameter;
+		int spd = lp.height + rp.height + 2;
+
+		sp.diameter = Math.max(spd, Math.max(lpd, rpd));
+
+		return sp;
+	}
+
+	private class BPair {
+		boolean isBalanced;
+		int height;
+	}
+
+	public boolean balanced() {
+		return this.balanced(root).isBalanced;
+	}
+
+	private BPair balanced(Node node) {
+
+		if (node == null) {
+			BPair bp = new BPair();
+			bp.height = -1;
+			bp.isBalanced = true;
+			return bp;
+		}
+		BPair lp = balanced(node.left);
+		BPair rp = balanced(node.right);
+
+		BPair sp = new BPair();
+		sp.height = Math.max(lp.height, rp.height) + 1;
+
+		int bf = lp.height - rp.height;
+
+		if (lp.isBalanced && rp.isBalanced && bf >= -1 && bf <= 1) {
+			sp.isBalanced = true;
+		} else {
+			sp.isBalanced = false;
+		}
+
+		return sp;
 	}
 
 }
