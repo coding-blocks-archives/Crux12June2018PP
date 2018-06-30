@@ -189,4 +189,53 @@ public class BST {
 
 	}
 
+	public void printInRange(int ll, int ul) {
+		printInRange(this.root, ll, ul);
+	}
+
+	private void printInRange(Node node, int ll, int ul) {
+
+		if (node == null) {
+			return;
+		}
+
+		if (node.data < ll) {
+			printInRange(node.right, ll, ul);
+		} else if (node.data > ul) {
+			printInRange(node.left, ll, ul);
+		} else {
+
+			printInRange(node.left, ll, ul);
+			System.out.println(node.data);
+			printInRange(node.right, ll, ul);
+		}
+
+	}
+
+	private class Mover {
+		int sum = 0;
+
+	}
+
+	public void replaceWithSumOfLarger() {
+		Mover mover = new Mover();
+		replaceWithSumOfLarger(this.root, mover);
+	}
+
+	private void replaceWithSumOfLarger(Node node, Mover mover) {
+
+		if (node == null) {
+			return;
+		}
+
+		replaceWithSumOfLarger(node.right, mover);
+
+		int temp = node.data;
+		node.data = mover.sum;
+		mover.sum += temp;
+
+		replaceWithSumOfLarger(node.left, mover);
+
+	}
+
 }

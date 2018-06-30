@@ -17,9 +17,11 @@ public class BTClient {
 	// 10 true 20 true 30 false false false false
 	public static void main(String[] args) {
 
-		int[] in = { 40, 20, 70, 60, 50, 10, 30, 40 };
-		int[] pre = { 10, 20, 40, 50, 60, 70, 30, 40 };
+		// int[] in = { 40, 20, 70, 60, 50, 10, 30, 40 };
+		// int[] pre = { 10, 20, 40, 50, 60, 70, 30, 40 };
 
+		int[] pre = { 100, 5, 3, 7, 20, 15, 25, 22, 30, 40 };
+		int[] in = { 3, 5, 7, 100, 15, 20, 22, 25, 30, 40 };
 		BinaryTree bt = new BinaryTree(pre, in);
 		// BinaryTree bt = new BinaryTree(
 		// "10 true 20 true 40 false false true 50 false false true 30 true 60 false
@@ -33,7 +35,9 @@ public class BTClient {
 
 		System.out.println(bt.diameter());
 		System.out.println(bt.diameter2());
-		System.out.println(bt.balanced());
+		System.out.println(bt.isTreeBalanced());
+
+		bt.largestBST();
 
 	}
 

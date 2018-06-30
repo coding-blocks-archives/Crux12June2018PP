@@ -216,7 +216,7 @@ public class BinaryTree {
 
 	}
 
-	private class Pair {
+	private class DiaPair {
 
 		int height;
 		int diameter;
@@ -226,19 +226,19 @@ public class BinaryTree {
 		return diameter2(root).diameter;
 	}
 
-	private Pair diameter2(Node node) {
+	private DiaPair diameter2(Node node) {
 
 		if (node == null) {
-			Pair bp = new Pair();
+			DiaPair bp = new DiaPair();
 			bp.height = -1;
 			bp.diameter = 0;
 			return bp;
 		}
 
-		Pair lp = diameter2(node.left);
-		Pair rp = diameter2(node.right);
+		DiaPair lp = diameter2(node.left);
+		DiaPair rp = diameter2(node.right);
 
-		Pair sp = new Pair();
+		DiaPair sp = new DiaPair();
 		sp.height = Math.max(lp.height, rp.height) + 1;
 
 		int lpd = lp.diameter;
@@ -255,11 +255,11 @@ public class BinaryTree {
 		int height;
 	}
 
-	public boolean balanced() {
-		return this.balanced(root).isBalanced;
+	public boolean isTreeBalanced() {
+		return this.isTreeBalanced(root).isBalanced;
 	}
 
-	private BPair balanced(Node node) {
+	private BPair isTreeBalanced(Node node) {
 
 		if (node == null) {
 			BPair bp = new BPair();
@@ -267,8 +267,8 @@ public class BinaryTree {
 			bp.isBalanced = true;
 			return bp;
 		}
-		BPair lp = balanced(node.left);
-		BPair rp = balanced(node.right);
+		BPair lp = isTreeBalanced(node.left);
+		BPair rp = isTreeBalanced(node.right);
 
 		BPair sp = new BPair();
 		sp.height = Math.max(lp.height, rp.height) + 1;
@@ -282,6 +282,56 @@ public class BinaryTree {
 		}
 
 		return sp;
+	}
+
+	public class BSTPair {
+
+		int max = Integer.MIN_VALUE;
+		int min = Integer.MAX_VALUE;
+
+		int size = 0;
+		Node largestBSTRoot;
+		boolean isBST = true;
+	}
+
+	public void largestBST() {
+
+		BSTPair pair = largestBST(root);
+		System.out.println(pair.largestBSTRoot.data);
+		System.out.println(pair.size);
+	}
+
+	private BSTPair largestBST(Node node) {
+
+		if (node == null) {
+			BSTPair bp = new BSTPair();
+			return bp;
+		}
+		BSTPair lp = largestBST(node.left);
+		BSTPair rp = largestBST(node.right);
+
+		BSTPair sp = new BSTPair();
+		sp.max = Math.max(node.data, Math.max(lp.max, rp.max));
+		sp.min = Math.min(node.data, Math.min(lp.min, rp.min));
+
+		if (node.data > lp.max && node.data < rp.min && lp.isBST && rp.isBST) {
+			sp.isBST = true;
+			sp.largestBSTRoot = node;
+			sp.size = lp.size + rp.size + 1;
+		} else {
+			sp.isBST = false;
+
+			if (lp.size >= rp.size) {
+				sp.largestBSTRoot = lp.largestBSTRoot;
+				sp.size = lp.size;
+			} else {
+				sp.largestBSTRoot = rp.largestBSTRoot;
+				sp.size = rp.size;
+			}
+		}
+
+		return sp;
+
 	}
 
 }
