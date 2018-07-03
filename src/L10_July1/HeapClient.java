@@ -69,6 +69,17 @@ public class HeapClient {
 		lists.add(list3);
 
 		System.out.println(mergeKSortedLists(lists));
+		
+	
+		ArrayList<Integer> list = new ArrayList<>() ;
+		
+		list.add(10) ;
+		list.add(100) ;
+		list.add(20) ;
+		list.add(30) ;
+		list.add(5) ;
+		
+		System.out.println(kLargest(list, 3));
 
 	}
 
@@ -114,10 +125,29 @@ public class HeapClient {
 		return ans;
 	}
 
-	public static ArrayList<Integer> kLargest(ArrayList<Integer> list) {
+	public static ArrayList<Integer> kLargest(ArrayList<Integer> list, int k) {
+
+		Heap heap = new Heap();
 
 		ArrayList<Integer> ans = new ArrayList<>();
 
+		for (int i = 0; i < k; i++) {
+			heap.insert(list.get(i));
+		}
+
+		for (int i = k; i < list.size(); i++) {
+
+			int fv = heap.get();
+
+			if (list.get(i) > fv) {
+				heap.remove();
+				heap.insert(list.get(i));
+			}
+		}
+
+		while (heap.size() != 0) {
+			ans.add(heap.remove());
+		}
 		return ans;
 	}
 

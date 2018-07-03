@@ -76,7 +76,7 @@ public class HeapGeneric<T extends Comparable<T>> {
 
 	}
 
-	public T getMin() {
+	public T get() {
 		return data.get(0);
 	}
 

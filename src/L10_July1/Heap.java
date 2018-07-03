@@ -76,7 +76,7 @@ public class Heap {
 
 	}
 
-	public int getMin() {
+	public int get() {
 		return data.get(0);
 	}
 }
