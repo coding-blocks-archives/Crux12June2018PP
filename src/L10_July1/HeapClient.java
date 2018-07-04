@@ -69,18 +69,16 @@ public class HeapClient {
 		lists.add(list3);
 
 		System.out.println(mergeKSortedLists(lists));
-		
-	
-		ArrayList<Integer> list = new ArrayList<>() ;
-		
-		list.add(10) ;
-		list.add(100) ;
-		list.add(20) ;
-		list.add(30) ;
-		list.add(5) ;
-		
-		System.out.println(kLargest(list, 3));
 
+		ArrayList<Integer> list = new ArrayList<>();
+
+		list.add(10);
+		list.add(100);
+		list.add(20);
+		list.add(30);
+		list.add(5);
+
+		System.out.println(kLargest(list, 3));
 	}
 
 	private static class Pair implements Comparable<Pair> {

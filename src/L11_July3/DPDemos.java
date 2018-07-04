@@ -13,26 +13,42 @@ public class DPDemos {
 	public static void main(String[] args) {
 
 		long start = System.currentTimeMillis();
-		int n = 3;
-		// System.out.println(fibTD(n, new int[n + 1]));
-		// System.out.println(fibBU(n));
-		// System.out.println(fibBUSE(n));
+		int n = 60;
 
+		// System.out.println(FibTD(n, new int[n + 1]));
+		// System.out.println(FibBU(n));
+		// System.out.println(FibBUSE(n));
+		//
 		// System.out.println(BoardPathTD(0, n, new int[n + 1]));
 		// System.out.println(BoardPathBU(n));
 		// System.out.println(BoardPathBUSE(n));
-
+		//
 		// System.out.println(MazePathTD(0, 0, n, n, new int[n + 1][n + 1]));
 		// System.out.println(MazePathBU(n, n));
 		// System.out.println(MazePathBUSE(n, n));
 		// System.out.println(MazePathBUSED(n, n));
-		System.out.println(LCS("abcdgh", "adefg"));
+		System.out.println(LCSBU("abcd", "agcfd"));
+		System.out.println(EditDistanceBU("abcd", "agcfd"));
+
+		// int[] arr = new int[n];
+		// for (int i = 0; i < arr.length; i++) {
+		// arr[i] = i + 1;
+		// }
+		//
+		// System.out.println(MCM(arr, 0, arr.length - 1, new
+		// int[arr.length][arr.length]));
+		// System.out.println(MCMBU(arr));
+
+		int[] prices = { 2, 3, 5, 1, 4 };
+		System.out.println(WineProblem(prices, 0, prices.length - 1, 1));
+		System.out.println(WineProblemBU(prices));
 		long end = System.currentTimeMillis();
 
-		System.out.println(end - start);
+		System.out.println("Duration: " + (end - start) + " ms");
+
 	}
 
-	public static int fib(int n) {
+	public static int Fib(int n) {
 
 		if (n == 0) {
 			return 0;
@@ -40,15 +56,15 @@ public class DPDemos {
 		if (n == 1) {
 			return 1;
 		}
-		int fnm1 = fib(n - 1);
-		int fnm2 = fib(n - 2);
+		int fnm1 = Fib(n - 1);
+		int fnm2 = Fib(n - 2);
 
 		int fn = fnm1 + fnm2;
 
 		return fn;
 	}
 
-	public static int fibTD(int n, int[] strg) {
+	public static int FibTD(int n, int[] strg) {
 
 		if (n == 0 || n == 1) {
 			return n;
@@ -59,8 +75,8 @@ public class DPDemos {
 			return strg[n];
 		}
 
-		int fnm1 = fibTD(n - 1, strg);
-		int fnm2 = fibTD(n - 2, strg);
+		int fnm1 = FibTD(n - 1, strg);
+		int fnm2 = FibTD(n - 2, strg);
 
 		int fn = fnm1 + fnm2;
 
@@ -70,7 +86,7 @@ public class DPDemos {
 		return fn;
 	}
 
-	public static int fibBU(int n) {
+	public static int FibBU(int n) {
 
 		int[] strg = new int[n + 1];
 
@@ -85,7 +101,7 @@ public class DPDemos {
 
 	}
 
-	public static int fibBUSE(int n) {
+	public static int FibBUSE(int n) {
 
 		int[] strg = new int[2];
 
@@ -273,6 +289,234 @@ public class DPDemos {
 		}
 
 		return ans;
+
+	}
+
+	public static int LCSBU(String s1, String s2) {
+
+		int[][] strg = new int[s1.length() + 1][s2.length() + 1];
+
+		for (int row = s1.length() - 1; row >= 0; row--) {
+
+			for (int col = s2.length() - 1; col >= 0; col--) {
+
+				if (s1.charAt(row) == s2.charAt(col)) {
+					strg[row][col] = 1 + strg[row + 1][col + 1];
+				} else {
+					strg[row][col] = Math.max(strg[row][col + 1], strg[row + 1][col]);
+				}
+			}
+		}
+
+		return strg[0][0];
+
+	}
+
+	public static int EditDistanceTD(String s1, String s2, int[][] strg) {
+
+		if (s1.length() == 0 || s2.length() == 0) {
+			return Math.max(s1.length(), s2.length());
+		}
+
+		if (strg[s1.length()][s2.length()] != 0) {
+			return strg[s1.length()][s2.length()];
+		}
+
+		char ch1 = s1.charAt(0);
+		char ch2 = s2.charAt(0);
+
+		String ros1 = s1.substring(1);
+		String ros2 = s2.substring(1);
+
+		int ans = 0;
+
+		if (ch1 == ch2) {
+			ans = EditDistanceTD(ros1, ros2, strg);
+		} else {
+
+			int ci = EditDistanceTD(ros1, s2, strg);
+			int cd = EditDistanceTD(s1, ros2, strg);
+			int cr = EditDistanceTD(ros1, ros2, strg);
+
+			ans = Math.min(cr, Math.min(ci, cd)) + 1;
+
+		}
+
+		strg[s1.length()][s2.length()] = ans;
+		return ans;
+
+	}
+
+	public static int EditDistanceBU(String s1, String s2) {
+
+		int[][] strg = new int[s1.length() + 1][s2.length() + 1];
+
+		for (int row = s1.length(); row >= 0; row--) {
+
+			for (int col = s2.length(); col >= 0; col--) {
+
+				if (row == s1.length()) {
+					strg[row][col] = s2.length() - col;
+					continue;
+				}
+				if (col == s2.length()) {
+					strg[row][col] = s1.length() - row;
+					continue;
+				}
+
+				if (s1.charAt(row) == s2.charAt(col)) {
+					strg[row][col] = strg[row + 1][col + 1];
+				} else {
+
+					int ci = strg[row + 1][col];
+					int cd = strg[row][col + 1];
+					int cr = strg[row + 1][col + 1];
+
+					strg[row][col] = Math.min(cr, Math.min(ci, cd)) + 1;
+				}
+
+			}
+		}
+
+		return strg[0][0];
+	}
+
+	public static int MCM(int[] arr, int si, int ei, int[][] strg) {
+
+		if (si + 1 == ei) {
+			return 0;
+		}
+
+		if (strg[si][ei] != 0) {
+			return strg[si][ei];
+		}
+
+		int min = Integer.MAX_VALUE;
+
+		for (int k = si + 1; k <= ei - 1; k++) {
+
+			int fp = MCM(arr, si, k, strg); // si * k
+			int sp = MCM(arr, k, ei, strg); // k * ei
+			int sw = arr[si] * arr[k] * arr[ei];
+
+			int sum = fp + sp + sw;
+
+			if (sum < min) {
+				min = sum;
+			}
+		}
+
+		strg[si][ei] = min;
+		return min;
+
+	}
+
+	public static int MCMBU(int[] arr) {
+
+		int n = arr.length;
+		int[][] strg = new int[n][n];
+
+		for (int slide = 1; slide <= n - 2; slide++) {
+
+			for (int si = 0; si <= n - slide - 2; si++) {
+
+				int ei = si + slide + 1;
+
+				// si, ei
+				int min = Integer.MAX_VALUE;
+
+				for (int k = si + 1; k <= ei - 1; k++) {
+
+					int fp = strg[si][k]; // si * k
+					int sp = strg[k][ei]; // k * ei
+					int sw = arr[si] * arr[k] * arr[ei];
+
+					int sum = fp + sp + sw;
+
+					if (sum < min) {
+						min = sum;
+					}
+				}
+
+				strg[si][ei] = min;
+
+			}
+
+		}
+
+		return strg[0][n - 1];
+
+	}
+
+	public static int WineProblem(int[] prices, int si, int ei, int yr) {
+
+		if (si == ei) {
+			return prices[si] * yr;
+		}
+
+		int fw = WineProblem(prices, si + 1, ei, yr + 1) + (prices[si] * yr);
+		int lw = WineProblem(prices, si, ei - 1, yr + 1) + (prices[ei] * yr);
+
+		int res = Math.max(fw, lw);
+
+		return res;
+
+	}
+
+	public static int WineProblemTD(int[] prices, int si, int ei, int[][] strg) {
+
+		int yr = prices.length - (ei - si);
+
+		if (si == ei) {
+			return prices[si] * yr;
+		}
+
+		if (strg[si][ei] != 0) {
+			return strg[si][ei];
+		}
+
+		int fw = WineProblemTD(prices, si + 1, ei, strg) + (prices[si] * yr);
+		int lw = WineProblemTD(prices, si, ei - 1, strg) + (prices[ei] * yr);
+
+		int res = Math.max(fw, lw);
+
+		strg[si][ei] = res;
+		return res;
+
+	}
+
+	public static int WineProblemBU(int[] prices) {
+
+		int n = prices.length;
+
+		int[][] strg = new int[n][n];
+
+		for (int slide = 1; slide <= n; slide++) {
+
+			for (int si = 0; si <= n - slide; si++) {
+
+				int ei = si + slide - 1;
+
+				int yr = n - (ei - si);
+
+				if (si == ei) {
+					strg[si][ei] = prices[si] * yr;
+				} else {
+
+					int fw = strg[si + 1][ei] + (prices[si] * yr);
+					int lw = strg[si][ei - 1] + (prices[ei] * yr);
+
+					int res = Math.max(fw, lw);
+
+					strg[si][ei] = res;
+
+				}
+
+			}
+
+		}
+
+		return strg[0][n - 1];
 
 	}
 
