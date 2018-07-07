@@ -13,7 +13,7 @@ public class DPDemos {
 	public static void main(String[] args) {
 
 		long start = System.currentTimeMillis();
-		int n = 60;
+		// int n = 60;
 
 		// System.out.println(FibTD(n, new int[n + 1]));
 		// System.out.println(FibBU(n));
@@ -27,8 +27,8 @@ public class DPDemos {
 		// System.out.println(MazePathBU(n, n));
 		// System.out.println(MazePathBUSE(n, n));
 		// System.out.println(MazePathBUSED(n, n));
-		System.out.println(LCSBU("abcd", "agcfd"));
-		System.out.println(EditDistanceBU("abcd", "agcfd"));
+		// System.out.println(LCSBU("abcd", "agcfd"));
+		// System.out.println(EditDistanceBU("abcd", "agcfd"));
 
 		// int[] arr = new int[n];
 		// for (int i = 0; i < arr.length; i++) {
@@ -39,11 +39,31 @@ public class DPDemos {
 		// int[arr.length][arr.length]));
 		// System.out.println(MCMBU(arr));
 
-		int[] prices = { 2, 3, 5, 1, 4 };
-		System.out.println(WineProblem(prices, 0, prices.length - 1, 1));
-		System.out.println(WineProblemBU(prices));
-		long end = System.currentTimeMillis();
+		// int[] prices = { 2, 3, 5, 1, 4 };
+		// System.out.println(WineProblem(prices, 0, prices.length - 1, 1));
+		// System.out.println(WineProblemBU(prices));
 
+		// int[] prices = { 1, 4, 5, 7 };
+		// int[] weight = { 1, 3, 4, 5 };
+		// int cap = 7;
+		// System.out.println(Knapsack(prices, weight, cap, 0, new int[prices.length +
+		// 1][cap + 1]));
+		// System.out.println(KnapsackBU(prices, weight, cap));
+
+		// int[] prices = { 0, 3, 5, 8, 9, 10, 17, 17, 20 };
+		// int n = prices.length;
+		// System.out.println(RodCut(prices, n - 1, new int[n]));
+		// System.out.println(RodCutBU(prices, n - 1));
+
+		// int[] arr = { 10, 20, 30, 40, 50 };
+		// System.out.println(MixturesTD(arr, 0, arr.length - 1, new
+		// int[arr.length][arr.length]));
+		//
+		// System.out.println(MixturesBU(arr));
+
+		String str = "ababbbabbababacbhzxgcujsdhcusgdiydhuiyrhuivchdui";
+		System.out.println(PalindromePartition(str, 0, str.length() - 1, new int[str.length()][str.length()]));
+		long end = System.currentTimeMillis();
 		System.out.println("Duration: " + (end - start) + " ms");
 
 	}
@@ -517,6 +537,253 @@ public class DPDemos {
 		}
 
 		return strg[0][n - 1];
+
+	}
+
+	public static int Knapsack(int[] prices, int[] weight, int cap, int vidx, int[][] strg) {
+
+		if (vidx == weight.length) {
+			return 0;
+		}
+
+		if (strg[vidx][cap] != 0) {
+			return strg[vidx][cap];
+		}
+
+		int include = 0;
+
+		if (cap >= weight[vidx])
+			include = Knapsack(prices, weight, cap - weight[vidx], vidx + 1, strg) + prices[vidx];
+
+		int exclude = Knapsack(prices, weight, cap, vidx + 1, strg);
+
+		int ans = Math.max(include, exclude);
+
+		strg[vidx][cap] = ans;
+		return ans;
+	}
+
+	public static int KnapsackBU(int[] prices, int[] weight, int cap) {
+
+		int nr = prices.length + 1;
+		int nc = cap + 1;
+
+		int[][] strg = new int[nr][nc];
+
+		for (int row = 0; row < nr; row++) {
+
+			for (int col = 0; col < nc; col++) {
+
+				if (row == 0 || col == 0) {
+					strg[row][col] = 0;
+				} else {
+
+					int include = 0;
+
+					if (col >= weight[row - 1]) {
+						include = prices[row - 1] + strg[row - 1][col - weight[row - 1]];
+					}
+
+					int exclude = strg[row - 1][col];
+
+					strg[row][col] = Math.max(include, exclude);
+
+				}
+			}
+		}
+
+		return strg[nr - 1][nc - 1];
+
+	}
+
+	public static int RodCut(int[] prices, int n, int[] strg) {
+
+		if (n == 0) {
+			return 0;
+		}
+
+		if (strg[n] != 0) {
+			return strg[n];
+		}
+
+		int left = 1;
+		int right = n - 1;
+
+		int max = prices[n]; // sell n length ros as it is
+
+		while (left <= right) {
+
+			int fh = RodCut(prices, left, strg);
+			int sh = RodCut(prices, right, strg);
+
+			int sum = fh + sh;
+
+			if (sum > max) {
+				max = sum;
+			}
+			left++;
+			right--;
+		}
+
+		strg[n] = max;
+		return max;
+
+	}
+
+	public static int RodCutBU(int[] prices, int n) {
+
+		int[] strg = new int[n + 1];
+
+		for (int i = 1; i <= n; i++) {
+
+			strg[i] = prices[i];
+
+			int left = 1;
+			int right = i - 1;
+
+			while (left <= right) {
+
+				int fh = strg[left];
+				int sh = strg[right];
+
+				int sum = fh + sh;
+
+				if (sum > strg[i]) {
+					strg[i] = sum;
+				}
+
+				left++;
+				right--;
+			}
+
+		}
+
+		return strg[n];
+
+	}
+
+	public static int color(int[] arr, int si, int ei) {
+
+		int sum = 0;
+
+		for (int i = si; i <= ei; i++) {
+			sum += arr[i];
+		}
+
+		return sum % 100;
+	}
+
+	public static int MixturesTD(int[] arr, int si, int ei, int[][] strg) {
+
+		if (si == ei) {
+			return 0;
+		}
+
+		if (strg[si][ei] != 0) {
+			return strg[si][ei];
+		}
+
+		int min = Integer.MAX_VALUE;
+
+		for (int k = si; k <= ei - 1; k++) {
+
+			int fp = MixturesTD(arr, si, k, strg);
+			int sp = MixturesTD(arr, k + 1, ei, strg);
+			int sw = color(arr, si, k) * color(arr, k + 1, ei);
+
+			int sum = fp + sp + sw;
+
+			if (sum < min) {
+				min = sum;
+			}
+		}
+
+		strg[si][ei] = min;
+		return min;
+
+	}
+
+	public static int MixturesBU(int[] arr) {
+
+		int n = arr.length;
+		int[][] strg = new int[arr.length][arr.length];
+
+		for (int slide = 1; slide <= n - 1; slide++) {
+
+			for (int si = 0; si <= n - slide - 1; si++) {
+
+				int ei = si + slide;
+
+				int min = Integer.MAX_VALUE;
+
+				for (int k = si; k <= ei - 1; k++) {
+
+					int fp = strg[si][k];
+					int sp = strg[k + 1][ei];
+					int sw = color(arr, si, k) * color(arr, k + 1, ei);
+
+					int sum = fp + sp + sw;
+
+					if (sum < min) {
+						min = sum;
+					}
+				}
+
+				strg[si][ei] = min;
+
+			}
+
+		}
+
+		return strg[0][n - 1];
+
+	}
+
+	public static boolean isPalindrome(String str, int si, int ei) {
+
+		int left = si;
+		int right = ei;
+
+		while (left < right) {
+
+			if (str.charAt(left) != str.charAt(right)) {
+				return false;
+			}
+
+			left++;
+			right--;
+		}
+
+		return true;
+
+	}
+
+	public static int PalindromePartition(String str, int si, int ei, int[][] strg) {
+
+		if (isPalindrome(str, si, ei)) {
+			return 0;
+		}
+
+		if (strg[si][ei] != 0) {
+			return strg[si][ei];
+		}
+
+		int min = Integer.MAX_VALUE;
+
+		for (int k = si; k <= ei - 1; k++) {
+
+			int fh = PalindromePartition(str, si, k, strg);
+			int sh = PalindromePartition(str, k + 1, ei, strg);
+
+			int ans = fh + sh + 1;
+
+			if (ans < min) {
+				min = ans;
+			}
+		}
+
+		strg[si][ei] = min;
+		return min;
 
 	}
 
