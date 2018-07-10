@@ -11,16 +11,16 @@ public class LLClient {
 	public static void main(String[] args) throws Exception {
 
 		LinkedList list = new LinkedList();
-		list.addLast(10);
+		list.addLast(12);
 		list.addLast(20);
-		list.addLast(30);
+		list.addLast(300);
 		list.addLast(40);
-		list.addLast(50);
+		list.addLast(5);
 
 		// list.display();
 		list.addFirst(100);
 		list.addFirst(101);
-		list.addFirst(102);
+		list.addFirst(12);
 		list.addFirst(103);
 		// list.display();
 		// System.out.println(list.removeFirst());
@@ -43,9 +43,12 @@ public class LLClient {
 		// list.fold();
 		list.display();
 
-		list.kReverse(3);
-		list.display();
-		list.addLast(1000);
+		// list.kReverse(3);
+		// list.display();
+		// list.addLast(1000);
+		// list.display();
+
+		list.mergeSort();
 		list.display();
 	}
 

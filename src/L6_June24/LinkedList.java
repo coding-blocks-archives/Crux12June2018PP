@@ -366,7 +366,7 @@ public class LinkedList {
 
 	}
 
-	public int mid() {
+	public Node mid() {
 
 		Node slow = this.head;
 		Node fast = this.head;
@@ -376,7 +376,7 @@ public class LinkedList {
 			fast = fast.next.next;
 		}
 
-		return slow.data;
+		return slow;
 	}
 
 	public int kthFromLast(int k) {
@@ -426,5 +426,73 @@ public class LinkedList {
 
 	}
 
-	
+	public LinkedList mergeTwoSortedLL(LinkedList other) {
+
+		LinkedList merged = new LinkedList();
+
+		Node temp1 = this.head;
+		Node temp2 = other.head;
+
+		while (temp1 != null && temp2 != null) {
+
+			if (temp1.data < temp2.data) {
+				merged.addLast(temp1.data);
+				temp1 = temp1.next;
+			} else {
+				merged.addLast(temp2.data);
+				temp2 = temp2.next;
+			}
+
+		}
+
+		if (temp1 == null) {
+			while (temp2 != null) {
+				merged.addLast(temp2.data);
+				temp2 = temp2.next;
+			}
+		}
+
+		if (temp2 == null) {
+			while (temp1 != null) {
+				merged.addLast(temp1.data);
+				temp1 = temp1.next;
+			}
+		}
+
+		return merged;
+
+	}
+
+	public void mergeSort() {
+
+		if (this.size == 1) {
+			return;
+		}
+
+		Node mid = mid();
+		Node midn = mid.next;
+
+		LinkedList fh = new LinkedList();
+		fh.head = this.head;
+		fh.tail = mid;
+		fh.tail.next = null;
+		fh.size = (this.size + 1) / 2;
+
+		LinkedList sh = new LinkedList();
+		sh.head = midn;
+		sh.tail = this.tail;
+		sh.tail.next = null;
+		sh.size = this.size / 2;
+
+		fh.mergeSort();
+		sh.mergeSort();
+
+		LinkedList merged = fh.mergeTwoSortedLL(sh);
+
+		this.head = merged.head;
+		this.tail = merged.tail;
+		this.size = merged.size;
+
+	}
+
 }
