@@ -1,4 +1,4 @@
-package Assignments;
+package Doubts;
 
 /**
  * @author Garima Chhikara
